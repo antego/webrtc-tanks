@@ -216,7 +216,12 @@ function broadcast(messageType, data) {
 }
 
 function broadcastPosition () {
-    broadcast(MESSAGE_TYPE.POSITION, { x: this.tank.x, y: this.tank.y });
+    broadcast(MESSAGE_TYPE.POSITION, {
+        x: tank.x,
+        y: tank.y,
+        angle: tank.angle,
+        turretAngle: turret.angle
+    });
 }
 
 function broadcastHello () {
@@ -238,10 +243,12 @@ function handleHello (data) {
 }
 
 function handlePosition (data) {
-    var target = _.find(enemies, function (enemy) { return enemy.name == data.name; }
+    var target = _.find(enemies, function (enemy) { return enemy.name == data.name; });
     if (target) {
         target.tank.x = data.x;
         target.tank.y = data.y;
+        target.tank.angle = data.angle;
+        target.turret.angle = data.turretAngle;
     } else {
         enemies.push(new EnemyTank(data.x, data.y, data.id, game, tank, enemyBullets));
     }
