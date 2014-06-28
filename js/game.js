@@ -54,12 +54,17 @@ EnemyTank.prototype.update = function() {
 
 var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'tanks', { preload: preload, create: create, update: update, render: render });
 
+//var myPeerId = new Date().getTime(); // random enough...
+var host = 'localhost';
+var port = 9000;
+var peers = {};
+var peer;
+
+
 function preload () {
 
-    var peer = new Peer('root', {host: 'localhost', port: 9000, path: '/tanks'});
-    peer.on('disconnect', function () {
-
-    });
+    peer = new Peer({host: host, port: 9000, path: '/tanks'});
+    connectToExistingPlayers();
 
     game.load.atlas('tank', 'assets/tanks.png', 'assets/tanks.json');
     game.load.atlas('enemy', 'assets/enemy-tanks.png', 'assets/tanks.json');
@@ -68,6 +73,14 @@ function preload () {
     game.load.image('earth', 'assets/scorched_earth.png');
     game.load.spritesheet('kaboom', 'assets/explosion.png', 64, 64, 23);
 
+}
+
+function connectToExistingPlayers () {
+    $.getJSON(window.location.protocol + '//' + host + ':' + port + '/tanks/peerjs/peers', function (peers) {
+        _.each(peers, function (peer) {
+            peers[peer] = peer.connect(peer);
+        });
+    });
 }
 
 var land;

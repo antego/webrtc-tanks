@@ -5,8 +5,15 @@ var server = new PeerServer({
   allow_discovery: true
 });
 
+var root;
+
 server.on('connection', function(id) {
   console.log('client connected! ' + id);
+  // first person to connect becomes game server
+  if (!root) {
+    root = id;
+  }
+
 });
 
 server.on('disconnect', function(id) {
