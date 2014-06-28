@@ -89,6 +89,7 @@ function connectToExistingPlayers () {
     $.getJSON(window.location.protocol + '//' + host + ':' + port + '/tanks/peerjs/peers', function (ps) {
         _.each(ps, function (p) {
             peers[p] = peer.connect(p);
+            console.log('connecting to peer ' + p);
         });
         broadcastHello();
     });
