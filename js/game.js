@@ -57,6 +57,9 @@ var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '
 function preload () {
 
     var peer = new Peer('root', {host: 'localhost', port: 9000, path: '/tanks'});
+    peer.on('disconnect', function () {
+
+    });
 
     game.load.atlas('tank', 'assets/tanks.png', 'assets/tanks.json');
     game.load.atlas('enemy', 'assets/enemy-tanks.png', 'assets/tanks.json');
