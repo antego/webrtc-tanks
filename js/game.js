@@ -61,6 +61,16 @@ function preload () {
 
     });
 
+    peer.on('connection', function(conn) {
+        conn.on('data', function (data) {
+            console.log('got data');
+            console.log(data);
+        });
+        conn.on('close', function () {
+            console.log('connection closed');
+        });
+    });
+
     game.load.atlas('tank', 'assets/tanks.png', 'assets/tanks.json');
     game.load.atlas('enemy', 'assets/enemy-tanks.png', 'assets/tanks.json');
     game.load.image('logo', 'assets/logo.png');
