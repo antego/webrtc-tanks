@@ -92,10 +92,10 @@ function preload () {
 }
 
 function connectToPlayer (id) {
-    if (_.has(peers, id)) {
-        return; // already connected
+    if (!_.has(peers, id)) {
+        peers[id] = peer.connect(id);
     }
-    peers[id] = peer.connect(id);
+    sendToPeer(id, MESSAGE_TYPE.HELLO);
     console.log('connecting to peer ' + id);
 }
 
@@ -107,7 +107,6 @@ function connectToExistingPlayers () {
             }
             connectToPlayer(p);
         });
-        broadcastHello();
     });
 }
 
@@ -265,7 +264,6 @@ function handle(messageType, data) {
 function handleHello (data) {
     console.log('hello from: ' + data.id);
     connectToPlayer(data.id);
-    sendToPeer(data.id, MESSAGE_TYPE.HELLO);
 }
 
 function handlePosition (data) {
