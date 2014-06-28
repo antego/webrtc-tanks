@@ -24,15 +24,9 @@ var EnemyTank = function (index, game, player, bullets) {
     this.tank.body.immovable = false;
     this.tank.body.collideWorldBounds = true;
     this.tank.body.bounce.setTo(1, 1);
-
-    this.tank.angle = game.rnd.angle();
-
-    game.physics.arcade.velocityFromRotation(this.tank.rotation, 100, this.tank.body.velocity);
-
 };
 
 EnemyTank.prototype.damage = function() {
-
     this.health -= 1;
 
     if (this.health <= 0)
@@ -47,33 +41,15 @@ EnemyTank.prototype.damage = function() {
     }
 
     return false;
-
 }
 
 EnemyTank.prototype.update = function() {
-
     this.shadow.x = this.tank.x;
     this.shadow.y = this.tank.y;
     this.shadow.rotation = this.tank.rotation;
 
     this.turret.x = this.tank.x;
     this.turret.y = this.tank.y;
-    this.turret.rotation = this.game.physics.arcade.angleBetween(this.tank, this.player);
-
-    if (this.game.physics.arcade.distanceBetween(this.tank, this.player) < 300)
-    {
-        if (this.game.time.now > this.nextFire && this.bullets.countDead() > 0)
-        {
-            this.nextFire = this.game.time.now + this.fireRate;
-
-            var bullet = this.bullets.getFirstDead();
-
-            bullet.reset(this.turret.x, this.turret.y);
-
-            bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 500);
-        }
-    }
-
 };
 
 var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'tanks', { preload: preload, create: create, update: update, render: render });
@@ -310,3 +286,5 @@ function render () {
     game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 32);
 
 }
+
+// var peer = new Peer({key: 'qjmrh6zwpf6o5hfr'});
