@@ -56,7 +56,6 @@ var port = 9000;
 var peers = {};
 var peer;
 
-
 function preload () {
 
     peer = new Peer({host: host, port: 9000, path: '/tanks'});
