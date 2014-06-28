@@ -90,11 +90,15 @@ function preload () {
 
 }
 
+function connectToPlayer (id) {
+    peers[id] = peer.connect(id);
+    console.log('connecting to peer ' + id);
+}
+
 function connectToExistingPlayers () {
     $.getJSON(window.location.protocol + '//' + host + ':' + port + '/tanks/peerjs/peers', function (ps) {
         _.each(ps, function (p) {
-            peers[p] = peer.connect(p);
-            console.log('connecting to peer ' + p);
+            connectToPlayer(p);
         });
         broadcastHello();
     });
@@ -237,6 +241,7 @@ function handle(messageType, data) {
 
 function handleHello (data) {
     console.log('hello from: ' + data.id);
+    connectToPlayer(data.id);
 }
 
 function handlePosition (data) {
