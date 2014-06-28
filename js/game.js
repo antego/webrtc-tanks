@@ -61,6 +61,7 @@ function preload () {
     peer = new Peer({host: host, port: port, path: '/tanks'});
     peer.on('open', function(id) {
       myPeerId = id;
+      console.log('connected to server, our peer id is: ' + myPeerId);
     });
     connectToExistingPlayers();
 
