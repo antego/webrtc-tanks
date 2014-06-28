@@ -76,9 +76,9 @@ function preload () {
 }
 
 function connectToExistingPlayers () {
-    $.getJSON(window.location.protocol + '//' + host + ':' + port + '/tanks/peerjs/peers', function (peers) {
-        _.each(peers, function (peer) {
-            peers[peer] = peer.connect(peer);
+    $.getJSON(window.location.protocol + '//' + host + ':' + port + '/tanks/peerjs/peers', function (ps) {
+        _.each(ps, function (p) {
+            peers[p] = peer.connect(p);
         });
     });
 }
