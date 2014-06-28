@@ -50,15 +50,18 @@ EnemyTank.prototype.update = function() {
 
 var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'tanks', { preload: preload, create: create, update: update, render: render });
 
-//var myPeerId = new Date().getTime(); // random enough...
 var host = 'localhost';
 var port = 9000;
 var peers = {};
 var peer;
+var myPeerId;
 
 function preload () {
 
     peer = new Peer({host: host, port: 9000, path: '/tanks'});
+    peer.on('open', function(id) {
+      myPeerId = id;
+    });
     connectToExistingPlayers();
 
     peer.on('connection', function(conn) {
@@ -87,6 +90,7 @@ function connectToExistingPlayers () {
         _.each(ps, function (p) {
             peers[p] = peer.connect(p);
         });
+        broadcastHello();
     });
 }
 
@@ -193,6 +197,28 @@ function removeLogo () {
 
 }
 
+var MESSAGE_TYPE = {
+    HELLO: 'h',
+    POSITION: 'p'
+};
+
+function broadcast(messageType, data) {
+    _.each(peers, function(peer) {
+        peer.send(_.extend(data, {
+            id: myPeerId,
+            type: messageType
+        }));
+    });
+}
+
+function broadcastPosition () {
+    broadcast(MESSAGE_TYPE.POSITION, { x: this.tank.x, y: this.tank.y });
+}
+
+function broadcastHello () {
+    broadcast(MESSAGE_TYPE.HELLO);
+}
+
 function update () {
 
     game.physics.arcade.overlap(enemyBullets, tank, bulletHitPlayer, null, this);
@@ -253,6 +279,8 @@ function update () {
         //  Boom!
         fire();
     }
+
+    broadcastPosition ();
 
 }
 
