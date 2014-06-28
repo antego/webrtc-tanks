@@ -68,8 +68,12 @@ function preload () {
         conn.on('data', function (data) {
             // use this to add enemies
             // enemies.push(new EnemyTank(x, y, peerId, game, tank, enemyBullets));
-            console.log('got data');
-            console.log(data);
+            var type = MESSAGE_TYPE[data.type];
+            if (!type) {
+                console.err('unrecognised message: ' + data);
+                return;
+            }
+            handle(type, data);
         });
         conn.on('close', function () {
             console.log('connection closed');
@@ -218,6 +222,24 @@ function broadcastPosition () {
 
 function broadcastHello () {
     broadcast(MESSAGE_TYPE.HELLO);
+}
+
+// opposite of broadcast
+function handle(messageType, data) {
+    if (messageType === MESSAGE_TYPE.HELLO) {
+        handleHello(data);
+    }
+    else if (messageType === MESSAGE_TYPE.POSITION) {
+        handlePosition(data);
+    }
+}
+
+function handleHello (data) {
+    console.log('hello from: ' + data.id);
+}
+
+function handlePosition (data) {
+    console.log('position from: ' + data.id);
 }
 
 function update () {
