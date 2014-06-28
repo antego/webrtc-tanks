@@ -215,7 +215,8 @@ function removeLogo () {
 
 var MESSAGE_TYPE = {
     HELLO: 'HELLO',
-    POSITION: 'POSITION'
+    POSITION: 'POSITION',
+    FIRE: 'FIRE'
 };
 
 function broadcast(messageType, data) {
@@ -251,6 +252,10 @@ function broadcastHello () {
     broadcast(MESSAGE_TYPE.HELLO);
 }
 
+function broadcastFire () {
+    broadcast(MESSAGE_TYPE.FIRE);
+}
+
 // opposite of broadcast
 function handle(messageType, data) {
     if (messageType === MESSAGE_TYPE.HELLO) {
@@ -258,6 +263,8 @@ function handle(messageType, data) {
     }
     else if (messageType === MESSAGE_TYPE.POSITION) {
         handlePosition(data);
+    } else if (messageType === MESSAGE_TYPE.FIRE) {
+        handleFire(data);
     }
 }
 
@@ -275,6 +282,15 @@ function handlePosition (data) {
         target.turret.angle = data.turretAngle;
     } else {
         enemies.push(new EnemyTank(data.x, data.y, data.id, game, tank, enemyBullets));
+    }
+}
+
+function handleFire (data) {
+    var target = _.find(enemies, function (enemy) { return enemy.name == data.name; });
+    if (target) {
+        var bullet = this.bullets.getFirstDead();
+        bullet.reset(target.tank.x, target.tank.y);
+        bullet.rotation = this.game.physics.arcade.moveToObject(bullet, target.turret, 500);
     }
 }
 
@@ -375,6 +391,8 @@ function fire () {
         bullet.reset(turret.x, turret.y);
 
         bullet.rotation = game.physics.arcade.moveToPointer(bullet, 1000, game.input.activePointer, 500);
+
+        broadcastFire();
     }
 
 }
