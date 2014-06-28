@@ -1,8 +1,4 @@
-var EnemyTank = function (index, game, player, bullets) {
-
-    var x = game.world.randomX;
-    var y = game.world.randomY;
-
+var EnemyTank = function (x, y, peerId, game, player, bullets) {
     this.game = game;
     this.health = 3;
     this.player = player;
@@ -63,6 +59,8 @@ function preload () {
 
     peer.on('connection', function(conn) {
         conn.on('data', function (data) {
+            // use this to add enemies
+            // enemies.push(new EnemyTank(x, y, peerId, game, tank, enemyBullets));
             console.log('got data');
             console.log(data);
         });
@@ -86,7 +84,7 @@ var shadow;
 var tank;
 var turret;
 
-var enemies;
+var enemies = [];
 var enemyBullets;
 var enemiesTotal = 0;
 var enemiesAlive = 0;
@@ -135,17 +133,6 @@ function create () {
     enemyBullets.setAll('anchor.y', 0.5);
     enemyBullets.setAll('outOfBoundsKill', true);
     enemyBullets.setAll('checkWorldBounds', true);
-
-    //  Create some baddies to waste :)
-    enemies = [];
-
-    enemiesTotal = 20;
-    enemiesAlive = 20;
-
-    for (var i = 0; i < enemiesTotal; i++)
-    {
-        enemies.push(new EnemyTank(i, game, tank, enemyBullets));
-    }
 
     //  A shadow below our tank
     shadow = game.add.sprite(0, 0, 'tank', 'shadow');
@@ -205,8 +192,6 @@ function update () {
         if (enemies[i].alive)
         {
             enemiesAlive++;
-            game.physics.arcade.collide(tank, enemies[i].tank);
-            game.physics.arcade.overlap(bullets, enemies[i].tank, bulletHitEnemy, null, this);
             enemies[i].update();
         }
     }
@@ -265,20 +250,20 @@ function bulletHitPlayer (tank, bullet) {
 
 }
 
-function bulletHitEnemy (tank, bullet) {
+// function bulletHitEnemy (tank, bullet) {
 
-    bullet.kill();
+//     bullet.kill();
 
-    var destroyed = enemies[tank.name].damage();
+//     var destroyed = enemies[tank.name].damage();
 
-    if (destroyed)
-    {
-        var explosionAnimation = explosions.getFirstExists(false);
-        explosionAnimation.reset(tank.x, tank.y);
-        explosionAnimation.play('kaboom', 30, false, true);
-    }
+//     if (destroyed)
+//     {
+//         var explosionAnimation = explosions.getFirstExists(false);
+//         explosionAnimation.reset(tank.x, tank.y);
+//         explosionAnimation.play('kaboom', 30, false, true);
+//     }
 
-}
+// }
 
 function fire () {
 
