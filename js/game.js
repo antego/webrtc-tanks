@@ -89,6 +89,9 @@ function preload () {
 }
 
 function connectToPlayer (id) {
+    if (_.has(peers, id)) {
+        return; // already connected
+    }
     peers[id] = peer.connect(id);
     console.log('connecting to peer ' + id);
 }
@@ -220,6 +223,17 @@ function broadcast(messageType, data) {
             type: messageType
         }));
     });
+
+
+function sendToPeer(id, messageType, data) {
+    var peer = peers[id];
+    if (peer == null) {
+        console.log('unrecognised peer id: ' + id);
+    }
+    peer.send(_.extend(data, {
+        id: myPeerId,
+        type: messageType
+    }));
 }
 
 function broadcastPosition () {
@@ -248,6 +262,7 @@ function handle(messageType, data) {
 function handleHello (data) {
     console.log('hello from: ' + data.id);
     connectToPlayer(data.id);
+    sendToPeer(data.id, MESSAGE_TYPE.HELLO);
 }
 
 function handlePosition (data) {
