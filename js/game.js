@@ -15,7 +15,7 @@ var EnemyTank = function (x, y, peerId, game, player, bullets) {
     this.tank.anchor.set(0.5);
     this.turret.anchor.set(0.3, 0.5);
 
-    this.tank.name = index.toString();
+    this.tank.name = peerId.toString();
     game.physics.enable(this.tank, Phaser.Physics.ARCADE);
     this.tank.body.immovable = false;
     this.tank.body.collideWorldBounds = true;
