@@ -50,15 +50,15 @@ EnemyTank.prototype.update = function() {
 
 var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'tanks', { preload: preload, create: create, update: update, render: render });
 
-var host = 'tanks.azurewebsites.net';
-var port = 80;
+var host = '192.168.';
+var port = 9000;
 var peers = {};
 var peer;
 var myPeerId;
 
 function preload () {
 
-    peer = new Peer({host: host, port: port, path: '/tanks'});
+    peer = new Peer({host: host, port: 9000, path: '/tanks'});
     peer.on('open', function(id) {
       myPeerId = id;
     });
@@ -203,8 +203,8 @@ function removeLogo () {
 }
 
 var MESSAGE_TYPE = {
-    HELLO: 'h',
-    POSITION: 'p'
+    HELLO: 'HELLO',
+    POSITION: 'POSITION'
 };
 
 function broadcast(messageType, data) {
