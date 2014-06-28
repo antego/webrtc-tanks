@@ -1,3 +1,5 @@
+"use strict";
+
 var EnemyTank = function (x, y, peerId, game, player, bullets) {
     this.game = game;
     this.health = 3;
@@ -224,7 +226,7 @@ function broadcast(messageType, data) {
             type: messageType
         }));
     });
-
+}
 
 function sendToPeer(id, messageType, data) {
     var peer = peers[id];
