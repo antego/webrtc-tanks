@@ -66,6 +66,7 @@ function preload () {
     connectToExistingPlayers();
 
     peer.on('connection', function(conn) {
+        console.log('new connection');
         conn.on('data', function (data) {
             var type = MESSAGE_TYPE[data.type];
             if (!type) {
