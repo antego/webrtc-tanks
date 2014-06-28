@@ -1,0 +1,24 @@
+{
+  "name": "webRTC-tanks",
+  "version": "0.0.1",
+  "description": "WebRTC tanks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sugendran/webrtc-tanks"
+  },
+  "keywords": [
+    "webrtc",
+    "tanks"
+  ],
+  "author": "sugendran,alextreppass",
+  "license": "MIT",
+  "dependencies": {
+    "node-static": "~0.7.1",
+    "socket.io": "~0.9.16",
+    "peer": "*"
+  }
+}
