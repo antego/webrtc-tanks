@@ -67,8 +67,6 @@ function preload () {
 
     peer.on('connection', function(conn) {
         conn.on('data', function (data) {
-            // use this to add enemies
-            // enemies.push(new EnemyTank(x, y, peerId, game, tank, enemyBullets));
             var type = MESSAGE_TYPE[data.type];
             if (!type) {
                 console.err('unrecognised message: ' + data);
@@ -236,11 +234,17 @@ function handle(messageType, data) {
 }
 
 function handleHello (data) {
-    console.log('hello from: ' + data.id);
+
 }
 
 function handlePosition (data) {
-    console.log('position from: ' + data.id);
+    var target = _.find(enemies, function (enemy) { return enemy.name == data.name; }
+    if (target) {
+        target.tank.x = data.x;
+        target.tank.y = data.y;
+    } else {
+        enemies.push(new EnemyTank(data.x, data.y, data.id, game, tank, enemyBullets));
+    }
 }
 
 function update () {
