@@ -62,8 +62,8 @@ function preload () {
     peer.on('open', function(id) {
       myPeerId = id;
       console.log('connected to server, our peer id is: ' + myPeerId);
+      connectToExistingPlayers();
     });
-    connectToExistingPlayers();
 
     peer.on('connection', function(conn) {
         conn.on('data', function (data) {
@@ -96,6 +96,9 @@ function connectToPlayer (id) {
 function connectToExistingPlayers () {
     $.getJSON(window.location.protocol + '//' + host + ':' + port + '/tanks/peerjs/peers', function (ps) {
         _.each(ps, function (p) {
+            if (p === myPeerId) {
+                return; // dont connect to self
+            }
             connectToPlayer(p);
         });
         broadcastHello();
