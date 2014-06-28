@@ -159,7 +159,7 @@ function create () {
     tank.bringToTop();
     turret.bringToTop();
 
-    logo = game.add.sprite(0, 200, 'logo');
+    logo = game.add.sprite((game.width - 800) / 2, 200, 'logo');
     logo.fixedToCamera = true;
 
     game.input.onDown.add(removeLogo, this);
