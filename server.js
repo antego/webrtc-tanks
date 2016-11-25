@@ -1,12 +1,21 @@
 var restify = require('restify');
-var PeerServer = require('peer').PeerServer;
-var server = new PeerServer({
-  port: process.env.PORT || 9000,
-  path: '/tanks',
-  allow_discovery: true
-});
+var express = require('express');
+var ExpressPeerServer = require('peer').ExpressPeerServer;
 
-server.on('connection', function(id) {
+
+var app = express();
+var server = app.listen(9000);
+var options = {
+  debug: true,
+  allow_discovery: true
+};
+
+var peerServer = ExpressPeerServer(server, options);
+app.use('/index.html', express.static(__dirname));
+app.use('/tanks', peerServer);
+
+
+peerServer.on('connection', function(id) {
   console.log('client connected! ' + id);
 
 });
@@ -15,7 +24,3 @@ server.on('disconnect', function(id) {
   console.log('client disconnected! ' + id);
 });
 
-server._app.get(/^\/?.*/, restify.serveStatic({
-  directory: __dirname,
-  default: 'index.html'
-}));

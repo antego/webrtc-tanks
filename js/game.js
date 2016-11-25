@@ -52,8 +52,8 @@ EnemyTank.prototype.update = function() {
 
 var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'tanks', { preload: preload, create: create, update: update, render: render });
 
-var host = 'tanks.azurewebsites.net';
-var port = 80;
+var host = 'localhost';
+var port = 9000;
 var peers = {};
 var peer;
 var myPeerId;

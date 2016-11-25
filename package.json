@@ -19,7 +19,7 @@
   "dependencies": {
     "node-static": "~0.7.1",
     "socket.io": "~0.9.16",
-    "peer": "*",
-    "restify": "^2.6.3"
+    "peer": "0.2.8",
+    "express": "~4.14.0"
   }
 }
